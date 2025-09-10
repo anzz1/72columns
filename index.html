@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>72 Columns</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="color-scheme" content="dark">
+<script>
+window.onload = function() {
+  var formatter = document.getElementById("formatter");
+  formatter.format = function() {
+    let text = [];
+    for (let i = 0, x = 0; i < formatter.value.length; i++) {
+      if (formatter.value[i] == '\n') {
+        x = 0;
+      }
+      text[i] = formatter.value[i];
+      if (x++ > 72) {
+        let j = i;
+        while (j > 0 && text[j] !== '\n') {
+          if (text[j] === ' ') {
+            text[j] = '\n';
+            break;
+          }
+          j--;
+        }
+        x = i - j;
+      }
+    }
+    const end = formatter.selectionEnd;
+    formatter.value = text.join("");
+    formatter.selectionEnd = end;
+  }
+  formatter.oninput = formatter.format
+  formatter.onpaste = function() {
+    setTimeout(formatter.format, 0.1);
+  }
+}
+</script>
+<style>
+* {
+  color: #e8e6e3;
+  color-scheme: dark;
+  background-color: #181a1b;
+  border-color: #736b5e;
+  scrollbar-color: #454a4d #202324;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: small;
+}
+textarea {
+  white-space: pre;
+  overflow-wrap: normal;
+  resize: vertical;
+}
+</style>
+</head>
+<body>
+<center>
+<h2>72 Columns</h2>
+<p><textarea id="formatter" rows="40" cols="80"></textarea></p>
+</center>
+</body>
+</html>
